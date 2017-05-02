@@ -11,7 +11,7 @@ function DBConnect(res) {
     if (err) throw err
     let i = 0
     client.query('SELECT * from games;').on('row', function(row) {
-			done()
+			done(err)
       response[i++] = row
     }).then( function() {
       res.send(response)
@@ -40,8 +40,8 @@ app.post('/scores/:id', function(req, res) {
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
     if (err) throw err
     let i = 0
-    client.query('SELECT * from scores where gameid=$1 order by cast(score as int) desc;', [id]).on('row', function(row) {
-			done()
+    client.query('SELECT * from scores where gameid=$1 order by cast(score as bigint) desc;', [id]).on('row', function(row) {
+			done(err)
       response[i++] = row
     }).then( function() {
       res.send(response)
@@ -57,7 +57,7 @@ app.post('/submitscore/:id', function(req, res) {
     if (err) throw err
     let i = 0
     client.query('INSERT INTO scores ("gameid", "nick", "score") VALUES ($1, $2, $3);', [id, req.body.name, req.body.score], function() {
-			done()
+			done(err)
 		})
   })
   res.send(req.body.name)
@@ -70,8 +70,8 @@ app.get('/games/:id', function(req, res) {
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
     if (err) throw err
     let i = 0
-    client.query('SELECT * from scores where gameid=$1 order by cast(score as int) desc;', [id]).on('row', function(row) {
-			done()
+    client.query('SELECT * from scores where gameid=$1 order by cast(score as bigint) desc;', [id]).on('row', function(row) {
+			done(err)
       response.push(row)
     }).then( function() {
       res.send(response)
@@ -87,7 +87,7 @@ app.get('/games', function(req, res) {
     if (err) throw err
     let i = 0
     client.query('SELECT * from games;').on('row', function(row) {
-			done()
+			done(err)
       response.push(row)
     }).then( function() {
       res.send(response)
@@ -102,7 +102,7 @@ app.post('/game', function (req,res) {
     if (err) throw err
     let i = 0
     client.query('INSERT INTO games ("name") VALUES ($1);', [req.body.name], function() {
-			done()
+			done(err)
 		})
   })
   res.send(req.body.name)
