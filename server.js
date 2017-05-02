@@ -40,7 +40,7 @@ app.post('/scores/:id', function(req, res) {
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
     if (err) throw err
     let i = 0
-    client.query('SELECT * from scores where gameid=$1 order by score desc;', [id]).on('row', function(row) {
+    client.query('SELECT * from scores where gameid=$1 order by cast(score as int) desc;', [id]).on('row', function(row) {
 			done()
       response[i++] = row
     }).then( function() {
@@ -70,7 +70,7 @@ app.get('/games/:id', function(req, res) {
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
     if (err) throw err
     let i = 0
-    client.query('SELECT * from scores where gameid=$1 order by score desc;', [id]).on('row', function(row) {
+    client.query('SELECT * from scores where gameid=$1 order by cast(score as int) desc;', [id]).on('row', function(row) {
 			done()
       response.push(row)
     }).then( function() {
