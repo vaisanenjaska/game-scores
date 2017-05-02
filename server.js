@@ -40,7 +40,7 @@ app.post('/scores/:id', function(req, res) {
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
     if (err) throw err
     let i = 0
-    client.query('SELECT * from scores where gameid=$1;', [id]).on('row', function(row) {
+    client.query('SELECT * from scores where gameid=$1 order by score desc;', [id]).on('row', function(row) {
 			done()
       response[i++] = row
     }).then( function() {
@@ -66,13 +66,13 @@ app.post('/submitscore/:id', function(req, res) {
 app.get('/games/:id', function(req, res) {
   let id = req.params.id
   pg.defaults.ssl = true;
-  let response = {}
+  let response = []
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
     if (err) throw err
     let i = 0
-    client.query('SELECT * from scores where gameid=$1;', [id]).on('row', function(row) {
+    client.query('SELECT * from scores where gameid=$1 order by score desc;', [id]).on('row', function(row) {
 			done()
-      response = row
+      response.push(row)
     }).then( function() {
       res.send(response)
     })

@@ -69,9 +69,9 @@
         method: 'POST',
         url: '/scores/' + id,
         success:function (data) {
-          $("#scoreList").html('<tr><th style="width:50%">Nickname</th><th>Score</th></tr>')
+          $("#scoreList").html('<tr><th style="width:10%">Rank</th><th style="width:33%">Nickname</th><th>Score</th></tr>')
           for(let i = 0; i < Object.keys(data).length; i++) {
-            $("#scoreList").append("<tr><td>" + data[i].nick + "</td><td>" + data[i].score + "</td></tr>")
+            $("#scoreList").append("<tr><td>" + (i+1) + "</td><td>" + data[i].nick + "</td><td>" + data[i].score + "</td></tr>")
           }
         }
       })
