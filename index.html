@@ -69,7 +69,7 @@
         method: 'POST',
         url: '/scores/' + id,
         success:function (data) {
-          $("#scoreList").html('<th>Nickname</th><th>Score</th>')
+          $("#scoreList").html('<tr><th style="width:50%">Nickname</th><th>Score</th></tr>')
           for(let i = 0; i < Object.keys(data).length; i++) {
             $("#scoreList").append("<tr><td>" + data[i].nick + "</td><td>" + data[i].score + "</td></tr>")
           }
