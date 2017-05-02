@@ -79,6 +79,22 @@ app.get('/games/:id', function(req, res) {
   })
 })
 
+app.get('/games', function(req, res) {
+  let id = req.params.id
+  pg.defaults.ssl = true;
+  let response = []
+  pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+    if (err) throw err
+    let i = 0
+    client.query('SELECT * from games;').on('row', function(row) {
+			done()
+      response.push(row)
+    }).then( function() {
+      res.send(response)
+    })
+  })
+})
+
 app.post('/game', function (req,res) {
   pg.defaults.ssl = true;
   let response = {}
